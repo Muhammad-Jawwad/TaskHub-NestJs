@@ -6,7 +6,8 @@ import {
     UsePipes,
     HttpException, 
     HttpStatus,
-    UnauthorizedException 
+    UnauthorizedException,
+    HttpCode
 } from '@nestjs/common';
 import { request } from 'express';
 import { authDTO } from 'src/auth/dtos/Auth.dto';
@@ -17,10 +18,10 @@ export class AuthController {
 
     constructor(private authsService:AuthService){}
 
+    @HttpCode(HttpStatus.OK)
     @Post('login')
     @UsePipes(new ValidationPipe())
     async userLogin(@Body() loginDetails: authDTO){
-        console.log("From Login", loginDetails);
         let user = await this.authsService.validateUser(loginDetails);
         return {
                 message: "User logged in sucessfully",

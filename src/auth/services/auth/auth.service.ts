@@ -1,4 +1,5 @@
 import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/typeorm/entities/User';
 import { comparePassword, encodePassword } from 'src/utils/bcrypt';
@@ -9,6 +10,7 @@ import { Repository } from 'typeorm';
 export class AuthService {
 
     constructor(
+        private jwtService: JwtService,
         @InjectRepository(User) private readonly userRepository: Repository<User>
     ){}
 
@@ -29,7 +31,10 @@ export class AuthService {
             throw new UnauthorizedException();
         }
         const { password, ...result } = user;
-        return result;
+        const payload = { sub: user.id, username: user.username };
+        const token = await this.jwtService.signAsync(payload);
+        const Result = {...result, access_token: token};
+        return Result;
     }
 
 }
