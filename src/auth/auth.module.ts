@@ -6,7 +6,6 @@ import { User } from 'src/typeorm/entities/User';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { env } from 'process';
-import { jwtConstants } from './constants';
 import { ConfigService } from '@nestjs/config'; 
 
 

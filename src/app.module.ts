@@ -1,10 +1,9 @@
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './typeorm/entities/User';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { config } from './configuration/config';
 import { Project } from './typeorm/entities/Project';
 import { Task } from './typeorm/entities/Task';
@@ -15,58 +14,26 @@ import { TeamMembers } from './typeorm/entities/TeamMembers';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [config]
+      load: [config],
     }),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'taskhub',
-      entities: [User,Project,Task,Team,TeamMembers], 
-      synchronize: true
-  }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DATABASE_HOST'),
+        port: configService.get('DATABASE_PORT'),
+        username: configService.get('DATABASE_USERNAME'),
+        password: configService.get('DATABASE_PASSWORD'),
+        database: configService.get('DATABASE'),
+        entities: [User, Project, Task, Team, TeamMembers],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
+    }),
     UsersModule,
-    AuthModule
-],
+    AuthModule,
+  ],
   controllers: [],
   providers: [],
 })
 export class AppModule {}
-
-// import { Module } from '@nestjs/common';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-// import { User } from './typeorm/entities/User';
-// import { UsersModule } from './users/users.module';
-// import { AuthModule } from './auth/auth.module';
-// import { ConfigModule, ConfigService } from '@nestjs/config';
-// import { config } from './config';
-
-// @Module({
-//   imports: [
-//     ConfigModule.forRoot({
-//       isGlobal: true,
-//       load: [config],
-//     }),
-//     TypeOrmModule.forRootAsync({
-//       imports: [ConfigModule],
-//       useFactory: (configService: ConfigService) => ({
-//         type: 'mysql',
-//         host: configService.get('host'),
-//         port: configService.get('port'),
-//         username: configService.get('username'),
-//         password: configService.get('password'),
-//         database: configService.get('database'),
-//         entities: [User],
-//         synchronize: true,
-//       }),
-//       inject: [ConfigService],
-//     }),
-//     UsersModule,
-//     AuthModule,
-//   ],
-//   controllers: [],
-//   providers: [],
-// })
-// export class AppModule {}
