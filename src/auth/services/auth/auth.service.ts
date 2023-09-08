@@ -2,8 +2,8 @@ import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@n
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/typeorm/entities/User';
-import { comparePassword, encodePassword } from 'src/utils/bcrypt';
-import { CreateUserType, ValidateUserType } from 'src/utils/types';
+import { comparePassword, encodePassword } from 'src/utilities/bcrypt';
+import { CreateUserType, ValidateUserType } from 'src/utilities/types';
 import { Repository } from 'typeorm';
 
 @Injectable()

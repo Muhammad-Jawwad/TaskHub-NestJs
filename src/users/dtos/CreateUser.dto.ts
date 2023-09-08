@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength,  } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsString, MinLength,  } from "class-validator";
+import { UserRole } from "src/typeorm/entities/User";
 
 export class createUserDTO {
     @IsString()
@@ -15,8 +16,8 @@ export class createUserDTO {
     @IsNotEmpty()
     email: string;
 
-    @IsString()
+    @IsEnum(UserRole)
     @IsNotEmpty()
-    role: string;
+    role: UserRole;
 }
 

@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength,  } from "class-validator";
+import { UserRole } from "src/typeorm/entities/User";
 
 export class authDTO {
 
@@ -12,6 +13,6 @@ export class authDTO {
 
     @IsString()
     @IsNotEmpty()
-    role: string;
+    role: UserRole;
 }
 
