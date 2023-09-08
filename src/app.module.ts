@@ -9,6 +9,9 @@ import { Project } from './typeorm/entities/Project';
 import { Task } from './typeorm/entities/Task';
 import { Team } from './typeorm/entities/Team';
 import { TeamMembers } from './typeorm/entities/TeamMembers';
+import { ProjectModule } from './project/project.module';
+import { TaskModule } from './task/task.module';
+import { TeamModule } from './team/team.module';
 
 @Module({
   imports: [
@@ -32,6 +35,9 @@ import { TeamMembers } from './typeorm/entities/TeamMembers';
     }),
     UsersModule,
     AuthModule,
+    ProjectModule,
+    TaskModule,
+    TeamModule,
   ],
   controllers: [],
   providers: [],

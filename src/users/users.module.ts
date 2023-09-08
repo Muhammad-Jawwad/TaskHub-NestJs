@@ -13,4 +13,5 @@ import { User } from 'src/typeorm/entities/User';
   controllers: [UsersController],
   providers: [UsersService]
 })
+
 export class UsersModule {}
