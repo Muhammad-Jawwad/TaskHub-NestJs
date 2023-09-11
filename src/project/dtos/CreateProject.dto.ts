@@ -16,11 +16,11 @@ export class createProjectDTO {
 
     @IsNumber()
     @IsNotEmpty()
-    assigned_PM: Number;
+    assigned_PM: number;
 
     @IsNumber()
     @IsNotEmpty()
-    assigned_team: Number;
+    assigned_team: number;
 
 }
 

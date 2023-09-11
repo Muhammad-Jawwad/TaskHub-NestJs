@@ -41,15 +41,23 @@ export class User {
    
 
     //Relations
-    @OneToMany(() => Project, (project) => project.assigned_PM)
+    @OneToMany(() => Project, (project) => project.assigned_PM,{
+      onDelete: 'CASCADE',
+    })
     projects: Project[];
 
-    @OneToOne(() => Team, (team) => team.team_lead)
+    @OneToOne(() => Team, (team) => team.team_lead,{
+      onDelete: 'CASCADE',
+    })
     teams: Team[];
 
-    @OneToOne(() => TeamMembers, (team_member) => team_member.user_id)
+    @OneToOne(() => TeamMembers, (team_member) => team_member.user_id,{
+      onDelete: 'CASCADE',
+    })
     team_members: TeamMembers[];
 
-    @OneToMany(() => Task, (task) => task.user_id)
+    @OneToMany(() => Task, (task) => task.user_id,{
+      onDelete: 'CASCADE',
+    })
     tasks: Task[];
 }

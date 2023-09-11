@@ -13,7 +13,6 @@ export class TeamService {
 
     createTeam(teamDetails: createTeamDTO){
         const { team_name } = teamDetails;
-        console.log("From services", teamDetails);
         const newTeam = this.teamRepository.create({
             team_lead : {
                 id : teamDetails.team_lead

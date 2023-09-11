@@ -47,7 +47,9 @@ export class Project {
     assigned_team: Team;
 
     //Relations
-    @OneToMany(() => Task, (task) => task.project_id)
+    @OneToMany(() => Task, (task) => task.project_id,{
+      onDelete: 'CASCADE',
+    })
     tasks: Task[];
 
 }

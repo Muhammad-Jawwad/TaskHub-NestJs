@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from "typeorm";
 import { User } from "./User";
 import { TeamMembers } from "./TeamMembers";
+import { Project } from "./Project";
 
 @Entity({ name: 'teams' })
 export class Team {
@@ -24,6 +25,13 @@ export class Team {
     team_lead: User;
 
     // Relations
-    @OneToOne(() => TeamMembers, (team_member) => team_member.team_id)
+    @OneToOne(() => TeamMembers, (team_member) => team_member.team_id,{
+        onDelete: 'CASCADE',
+      })
     team_members: TeamMembers[];
+
+    @OneToMany(() => Project, (project) => project.assigned_team,{
+        onDelete: 'CASCADE',
+      })
+    projects: Project[];
 }
