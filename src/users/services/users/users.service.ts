@@ -14,29 +14,36 @@ export class UsersService {
         @InjectRepository(User) private userRepository: Repository<User>
     ){}
 
-    createUser(userDetails: CreateUserType){
-        console.log("From services", userDetails);
-        const pass = encodePassword(userDetails.password)
-        console.log("pass",pass)
-        const newUser = this.userRepository.create({
-            ...userDetails, 
-            password: pass
-        })
-        console.log("newUser",newUser)
-        let res = this.userRepository.save(newUser);
-        return res;
+    async createUser(userDetails: CreateUserType){
+        try{
+            console.log("From services", userDetails);
+            const pass = encodePassword(userDetails.password)
+            console.log("pass",pass)
+            const newUser = this.userRepository.create({
+                ...userDetails, 
+                password: pass
+            })
+            console.log("newUser",newUser)
+            let res = await this.userRepository.save(newUser);
+            return res;
+        }catch (error) {
+            throw new HttpException(
+              error.message,
+              error.status || HttpStatus.BAD_REQUEST,
+            );
+        }
     }
 
     async fetchUsers(){
         try {
             const users = await this.userRepository.find();
             return users;
-          } catch (error) {
+        } catch (error) {
             throw new HttpException(
               error.message,
               error.status || HttpStatus.BAD_REQUEST,
             );
-          }
+        }
     }
 
     async getUsersByRole(userRequest: getUsersByRoleDTO){
@@ -46,12 +53,12 @@ export class UsersService {
                 where : { role }
             });
             return usersByRole;
-          } catch (error) {
+        } catch (error) {
             throw new HttpException(
               error.message,
               error.status || HttpStatus.BAD_REQUEST,
             );
-          }
+        }
     }
 
     async getUserById(userId : number){
@@ -64,12 +71,12 @@ export class UsersService {
                 throw new HttpException('User not found', HttpStatus.NOT_FOUND);
             }
             return usersById;
-          } catch (error) {
+        } catch (error) {
             throw new HttpException(
               error.message,
               error.status || HttpStatus.BAD_REQUEST,
             );
-          }
+        }
     }
     async updateUser(id : number, userRequest : UpdateUserType){
         try{

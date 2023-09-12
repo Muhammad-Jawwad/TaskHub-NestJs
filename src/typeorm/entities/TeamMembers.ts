@@ -21,7 +21,7 @@ export class TeamMembers {
     @JoinColumn({ name: 'user_id' })
     user_id: User;
 
-    @OneToOne(() => Team, {
+    @ManyToOne(() => Team, {
         eager: true,
     })
     @JoinColumn({ name: 'team_id' })

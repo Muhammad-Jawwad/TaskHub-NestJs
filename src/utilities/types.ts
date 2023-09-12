@@ -1,3 +1,4 @@
+import exp from "constants";
 import { type } from "os";
 import { ProjectStatus } from "src/typeorm/entities/Project";
 import { TaskStatus } from "src/typeorm/entities/Task";
@@ -45,6 +46,15 @@ export type UpdateTaskType = {
         id : number
     };
 }
+
+export type UpdateTeamType = {
+    team_name?: string;
+    team_lead?:  {
+        id : number
+    };
+}
+
+
 
 
 

@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './controllers/users/users.controller';
-import { UsersService } from './services/users/users.service';
+import { TeamMemberController } from './controllers/team-member/team-member.controller';
+import { TeamMemberService } from './services/team-member/team-member.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TeamMembers } from 'src/typeorm/entities/TeamMembers';
 import { User } from 'src/typeorm/entities/User';
+import { Team } from 'src/typeorm/entities/Team';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -16,11 +18,12 @@ import { ConfigService } from '@nestjs/config';
       })
     }),
     TypeOrmModule.forFeature([
-      User
+      TeamMembers,
+      User,
+      Team
     ])
   ],
-  controllers: [UsersController],
-  providers: [UsersService]
+  controllers: [TeamMemberController],
+  providers: [TeamMemberService]
 })
-
-export class UsersModule {}
+export class TeamMemberModule {}

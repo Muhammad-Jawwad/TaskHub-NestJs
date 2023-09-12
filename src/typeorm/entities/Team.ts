@@ -25,7 +25,7 @@ export class Team {
     team_lead: User;
 
     // Relations
-    @OneToOne(() => TeamMembers, (team_member) => team_member.team_id,{
+    @OneToMany(() => TeamMembers, (team_member) => team_member.team_id,{
         onDelete: 'CASCADE',
       })
     team_members: TeamMembers[];

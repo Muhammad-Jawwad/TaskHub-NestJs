@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createTaskDTO } from 'src/task/dtos/CreateTask.dto';
-import { updateTaskDTO } from 'src/task/dtos/UpdateTask.dto';
+import { updateTaskStatusDTO } from 'src/task/dtos/UpdateTaskStatus.dto';
 import { Task } from 'src/typeorm/entities/Task';
 import { UpdateTaskType } from 'src/utilities/types';
 import { Repository } from 'typeorm';
@@ -102,6 +102,81 @@ export class TaskService {
                 message: "The task is deleted sucessfully..."
             }
         }catch (error) {
+            throw new HttpException(
+                error.message,
+                error.status || HttpStatus.BAD_REQUEST,
+            );
+        }
+    }
+
+    async getTasksByTL(TL_Id: number){
+        try{
+            const TasksByTL = await this.taskRepository.find({
+                where: { 
+                    project_id : {
+                        assigned_team: {
+                            team_lead: {
+                                id: TL_Id
+                            }
+                        }
+                    }
+                }
+            });
+            if(TasksByTL.length === 0){
+                throw new HttpException("No Tasks found..", HttpStatus.NOT_FOUND);
+            }
+            console.log(TasksByTL);
+            return TasksByTL
+        }catch(error){
+            throw new HttpException(
+                error.message,
+                error.status || HttpStatus.BAD_REQUEST,
+            );
+        }
+    }
+
+    async getTaskByUserId(user_id:number){
+        try{
+            const TasksByUserId = await this.taskRepository.find({
+                where: { 
+                    user_id : {
+                        id: user_id
+                    }
+                }
+            });
+            if(TasksByUserId.length === 0){
+                throw new HttpException("No Tasks found..", HttpStatus.NOT_FOUND);
+            }
+            console.log(TasksByUserId);
+            return TasksByUserId
+        }catch(error){
+            throw new HttpException(
+                error.message,
+                error.status || HttpStatus.BAD_REQUEST,
+            );
+        }
+    }
+
+    async updateTaskStatus(taskStatus:updateTaskStatusDTO){
+        try{
+            const { id, status } = taskStatus;
+            const task = await this.taskRepository.findOne({
+                where: { id }
+            })
+            if(!task){
+                throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
+            }
+            if(task.status === status){
+                console.log("Status",task.status,status);
+                return {
+                    message: `Task status is already ${status}`,
+                }
+            }
+            await this.taskRepository.update({ id }, taskStatus);
+            return {
+                message: 'Task Status Updated Sucessfully',
+            }
+        }catch(error){
             throw new HttpException(
                 error.message,
                 error.status || HttpStatus.BAD_REQUEST,

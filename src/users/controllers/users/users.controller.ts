@@ -10,9 +10,11 @@ import {
     ParseIntPipe,
     Param,
     UsePipes,
-    Delete
+    Delete,
+    UseGuards
 } from '@nestjs/common';
 import { request } from 'express';
+import { AuthenticationGuard } from 'src/guards/authentication/authentication.guard';
 import { createUserDTO } from 'src/users/dtos/CreateUser.dto';
 import { getUsersByRoleDTO } from 'src/users/dtos/GetUsersByRole.dto';
 import { updateUserDTO } from 'src/users/dtos/UpdateUser.dto';
@@ -27,8 +29,8 @@ export class UsersController {
     @UsePipes(new ValidationPipe())
     createUser(@Body() userDetails: createUserDTO){
         console.log(userDetails)
-        let res = this.usersService.createUser(userDetails);
-        return res;
+        let result = this.usersService.createUser(userDetails);
+        return result;
     }
 
     @Get()
@@ -49,6 +51,7 @@ export class UsersController {
         const result = this.usersService.getUserById(id);
         return result;
     }
+
     @Patch('update/:userId')
     @UsePipes(new ValidationPipe())
     updateUser(@Param('userId', ParseIntPipe) id: number, @Body() userRequest: updateUserDTO){

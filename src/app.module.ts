@@ -12,6 +12,7 @@ import { TeamMembers } from './typeorm/entities/TeamMembers';
 import { ProjectModule } from './project/project.module';
 import { TaskModule } from './task/task.module';
 import { TeamModule } from './team/team.module';
+import { TeamMemberModule } from './team-member/team-member.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { TeamModule } from './team/team.module';
     ProjectModule,
     TaskModule,
     TeamModule,
+    TeamMemberModule,
   ],
   controllers: [],
   providers: [],
