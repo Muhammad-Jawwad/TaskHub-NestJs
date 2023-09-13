@@ -13,9 +13,15 @@ import { ProjectModule } from './project/project.module';
 import { TaskModule } from './task/task.module';
 import { TeamModule } from './team/team.module';
 import { TeamMemberModule } from './team-member/team-member.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core'
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([{
+      ttl: 30,
+      limit: 1,
+    }]),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [config],
@@ -42,6 +48,9 @@ import { TeamMemberModule } from './team-member/team-member.module';
     TeamMemberModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [{
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard,
+  }],
 })
 export class AppModule {}
